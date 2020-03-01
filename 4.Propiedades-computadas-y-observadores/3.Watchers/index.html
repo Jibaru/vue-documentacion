@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchers</title>
+    <script src="https://unpkg.com/vue"></script>
+    <!-- Dado que ya existe un rico ecosistema de bibliotecas ajax         -->
+    <!-- y colecciones de métodos de utilidad de uso general, Vue core     -->
+    <!-- es capaz de permanecer pequeño al no reinventarlos. Esto también  -->
+    <!-- te da la libertad de usar aquello con lo que estás familiarizado. -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+</head>
+<body>
+
+    <div id="watch-example">
+        <p>
+          Haz una pregunta de sí/no:
+          <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+      </div>
+    
+    <script>
+        var watchExampleVM = new Vue({
+        el: '#watch-example',
+        data: {
+            question: '',
+            answer: 'No puedo darte una respuesta hasta que hagas una pregunta!'
+        },
+        watch: {
+            // whenever question changes, this function will run
+            question: function (newQuestion, oldQuestion) {
+                this.answer = 'Esperando que deje de escribir...'
+                this.debouncedGetAnswer()
+            }
+        },
+        created: function () {
+            // _.debounce es una función proporcionada por lodash para limitar cuan
+            // a menudo se puede ejecutar una operación particularmente costosa.
+            // En este caso, queremos limitar la frecuencia con la que accedemos.
+            // yesno.wtf/api, esperando hasta que el usuario tenga completamente
+            // Terminé de escribir antes de realizar la solicitud ajax. Aprender
+            // más sobre la función _.debounce (y su primo
+            // _.throttle), visite: https://lodash.com/docs#debounce
+            this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+        },
+        methods: {
+            getAnswer:  function () {
+                if (this.question.indexOf('?') === -1) {
+                    this.answer = 'Las preguntas suelen contener un signo de interrogación. ;-)';
+                    return;
+                }
+
+                this.answer = 'Pensando...';
+
+                var vm = this;
+                axios.get('https://yesno.wtf/api')
+                    .then(function (response) {
+                        vm.answer = _.capitalize(response.data.answer)
+                    })
+                    .catch(function (error) {
+                        vm.answer = '¡Error! No se pudo alcanzar la API. ' + error
+                    })
+            }
+        }
+        })
+    </script>
+</body>
+</html>

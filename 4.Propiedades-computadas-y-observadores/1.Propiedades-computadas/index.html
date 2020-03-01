@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propiedades computadas</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <!-- Demasiada lógica en sus templates puede hacerlos grandes, 
+        complejos y difíciles de mantener -->
+        <div id="example-1-a">
+            {{ message.split('').reverse().join('') }}
+        </div>
+
+        <div id="example-1-b">
+            <p>Mensaje original: "{{ message }}"</p>
+            <p>Mensaje invertido computado: "{{ reversedMessage }}"</p>
+        </div>
+
+        <!-- Es posible que haya notado que podemos lograr el mismo 
+        resultado al invocar un método en la expresión, sin embargo
+        las propiedades computadas se almacenan en caché según sus 
+        dependencias.-->
+        <p>Mensaje Invertido: "{{ reverseMessage() }}"</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hola',
+                firstName: 'Ignacio',
+                lastName: 'Rueda'
+            },
+            methods: {
+                reverseMessage: function () {
+                    return this.message.split('').reverse().join('')
+                }
+            },
+            computed: {
+                // un getter computado
+                reversedMessage: function () {
+                    // `this` apunta a la instancia vm
+                    return this.message.split('').reverse().join('')
+                },
+
+                // la siguiente propiedad computada nunca se actualizará,
+                // porque Date.now() no es una dependencia reactiva
+                now: function(){
+                    return Date.now()
+                },
+
+                // Computed con setter
+                fullName: {
+                    // getter
+                    get: function () {
+                        return this.firstName + ' ' + this.lastName
+                    },
+                    // setter
+                    set: function (newValue) {
+                        var names = newValue.split(' ')
+                        this.firstName = names[0]
+                        this.lastName = names[names.length - 1]
+                    }
+                }
+            }
+        });
+
+        // La función que proporcionemos se utilizará como la función getter para la propiedad
+        console.log(vm.reversedMessage) // => 'aloH'
+        vm.message = 'Adios'
+        console.log(vm.reversedMessage) // => 'soidA'
+
+
+        // Prueba de setter:
+        vm.fullName = 'John Doe'; // vm.firstName y vm.lastName se actualizarán
+
+    </script>
+
+</body>
+</html>

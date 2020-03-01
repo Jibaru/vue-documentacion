@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propiedades computadas vs watched</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="demo-watch">{{ fullName }}</div>
+    <div id="demo-computed">{{ fullName }}</div>
+
+    <script>
+        //  imperativo y repetitivo (Usando watch)
+        var vm1 = new Vue({
+            el: '#demo-watch',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar',
+                fullName: 'Foo Bar'
+            },
+            watch: {
+                firstName: function (val) {
+                    this.fullName = val + ' ' + this.lastName
+                },
+                lastName: function (val) {
+                    this.fullName = this.firstName + ' ' + val
+                }
+            }
+        });
+
+        // Mucho mejor, ¿no?
+        var vm2 = new Vue({
+            el: '#demo-computed',
+            data: {
+                firstName: 'Foo',
+                lastName: 'Bar'
+            },
+            computed: {
+                fullName: function () {
+                    return this.firstName + ' ' + this.lastName
+                }
+            }
+        })
+    </script>
+</body>
+</html>
