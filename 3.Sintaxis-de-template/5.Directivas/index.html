@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directivas</title>
+</head>
+<body>
+    
+    <div id="app">
+        <p v-if="seen">Now you see me</p>
+
+        <!-- Argumentos -->
+        <a v-bind:href="url"> ... </a>
+        <a v-on:click="doSomething"> ... </a>
+
+        <!-- Modificadores -->
+        <form v-on:submit.prevent="onSubmit"> ... </form>
+
+        <!-- Modo abreviado -->
+        
+        <!-- v-bind -->
+        <!-- full syntax -->
+        <a v-bind:href="url"> ... </a>
+        <!-- abreviado -->
+        <a :href="url"> ... </a>
+
+        <!-- v-on -->
+        <!-- full syntax -->
+        <a v-on:click="doSomething"> ... </a>
+        <!-- abreviado -->
+        <a @click="doSomething"> ... </a>
+
+    </div>
+
+    <script>
+        var vm = new Vue({
+            data: {
+                seen: true,
+                url: 'www.google.com',
+
+            },
+            methods: {
+                doSomething(){
+                    console.log('Hice algo!');
+                },
+                onSubmit(){
+                    console.log('Submit!');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

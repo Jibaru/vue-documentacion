@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML puro</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+    <div id="app">
+        <p>Usando mustaches: {{ rawHtml }}</p>
+        <p>Usando directiva v-html: <span v-html="rawHtml"></span></p>
+    </div>
+    
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                rawHtml: `
+                    <div style="background-color: yellow">
+                        <h2>Título</h2>
+                        <p>Soy un texto html</p>
+                    </div>`
+            }
+        });
+    </script>
+</body>
+</html>

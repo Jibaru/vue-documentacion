@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atributos</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <div v-bind:id="dynamicId">Etiqueta con id: {{dynamicId}}</div>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <br>
+        <button type="button" @click="changeAttributes">Cambiar atributos!</button>
+    </div>
+    
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                dynamicId: 'id-1',
+                isButtonDisabled: true
+            },
+            methods: {
+                changeAttributes(){
+                    this.dynamicId = 'id-2';
+                    this.isButtonDisabled = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

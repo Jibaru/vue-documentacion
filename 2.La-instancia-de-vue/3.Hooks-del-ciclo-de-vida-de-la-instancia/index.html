@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hooks del ciclo de vida de la instancia</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    
+    <script>
+        // created puede ser utilizado para ejecutar código después
+        // que una instancia es creada
+        new Vue({
+            data: {
+                a: 1
+            },
+            created: function () {
+                // `this` hace referencia a la instancia vm
+                console.log('a es: ' + this.a)
+            }
+        })
+        // => "a es: 1"
+
+
+    </script>
+</body>
+</html>

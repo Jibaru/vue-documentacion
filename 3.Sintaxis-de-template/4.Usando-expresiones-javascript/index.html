@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usando expresiones javacript</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <div>{{ number + 1 }}</div>
+        <div>{{ ok ? 'YES' : 'NO' }}</div>
+        <div>{{ message.split('').reverse().join('') }}</div>
+        <div v-bind:id="'list-' + id">Id: {{ 'list-' + id }}</div>
+
+    <!-- Errores!
+        <div>
+             esto es una declaración, no una expresión 
+            {{ var a = 1 }}
+        </div>
+        <div>
+             El control de flujo tampoco funcionará, use expresiones ternarias 
+            {{ if (ok) { return message } }}
+        </div>
+    -->
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                number: 99,
+                ok: true,
+                message: 'mensaje',
+                id: 'id-custom',
+            }
+        });
+    </script>
+</body>
+</html>
