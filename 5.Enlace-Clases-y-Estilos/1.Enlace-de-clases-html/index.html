@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app1">
+        <div v-bind:class="{ active: isActive }"></div>
+        <div class="static"
+            v-bind:class="{ active: isActive, 'text-danger': hasError }">
+        </div>
+        <div v-bind:class="classObject"></div>
+    </div>
+    <div id="app2">
+        <div v-bind:class="classObject"></div>
+    </div>
+    <div id="app3">
+        <div v-bind:class="[activeClass, errorClass]"></div>
+        <div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>      
+        <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+        <my-component v-bind:class="{ active: isActive }"></my-component>
+        <my-component class="baz boo"></my-component>
+    </div>
+
+    <script>
+        // Sintaxis de Objeto
+        let vue1 = new Vue({
+            el: '#app1',
+            data: {
+                isActive: true,
+                hasError: false,
+                classObject: {
+                    active: true,
+                    'text-danger': false
+                }
+            }
+        });
+
+
+        let vue2 = new Vue({
+            el: '#app2',
+            data: {
+                isActive: true,
+                error: null
+            },
+            computed: {
+                classObject: function () {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
+                    }
+                }
+            }
+        });
+        // Sintaxis de array
+        let vue3 = new Vue({
+            el: '#app3',
+            data: {
+                activeClass: 'active',
+                errorClass: 'text-danger',
+                isActive: true,
+            }
+        });
+        // Con Componentes
+        Vue.component('my-component', {
+            template: '<p class="foo bar">Hi</p>'
+        });
+    </script>
+</body>
+</html>
